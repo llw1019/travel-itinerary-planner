@@ -163,7 +163,7 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ### 內容密度與編輯判斷的底線
 
-視覺質感不能取代內容密度,而**欄位填滿也不等於有編輯判斷**。完整標準在 `references/output-checklist.md` 第三、四節,寫法見 `references/editorial-standards.md`。
+視覺質感不能取代內容密度,而**欄位填滿也不等於有編輯判斷**。完整標準在 `references/output-checklist.md` 的內容密度與編輯判斷兩節,寫法見 `references/editorial-standards.md`。
 
 歷史上最常被違反的三條,先記住這三個:時間**精確到分鐘**;每日活動數量**對得上使用者選的步調**(緊湊 5-6、適中 4-5、悠閒 2-3),低於標準要補活動而不是寫「保留彈性」;每個「未確定」項都要有**具體的下一步動作**,不能只標「待補」。
 
@@ -181,6 +181,8 @@ description: Plan detailed domestic or international travel/business itineraries
 ## Step 6:交付前自我檢查
 
 **呼叫 `present_files` 之前,先讀 `references/output-checklist.md` 並逐項對照。**
+
+清單分兩級:**先跑第零節的硬擋 15 項**(沒做到就等於交出一份錯的東西),全過之後再跑完整清單的其餘部分。完整清單裡若有決定不補的項目,要在交付訊息裡說明是哪幾項與為什麼,**不可以默默略過**。
 
 這一步不是形式。先前實測時反覆出現的問題,不是不知道標準,而是標準寫成散文之後每次都會漏掉其中幾項——存檔沒問、目的地憑假設帶入、內容密度不足、同行者偏好被單一化。逐項打勾才擋得住。
 
