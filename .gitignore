@@ -1,2 +1,5 @@
 # 打包產物(每次要上傳 claude.ai 時再重新產生即可)
 *.zip
+
+# 使用者提供的品質基準 PDF,體積大不進 git(說明見 CLAUDE.md)
+ref/
