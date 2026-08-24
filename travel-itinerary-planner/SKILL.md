@@ -1,6 +1,6 @@
 ---
 name: travel-itinerary-planner
-description: Plan detailed domestic or international travel/business itineraries at executive-grade thoroughness — covering flights, ground transportation and driver notifications, lodging, pacing, indoor/outdoor activity ratio, budget, and traveler mobility/dietary needs — then produce a polished standalone HTML itinerary. Use this skill whenever the user asks to plan a trip, business travel, or itinerary (排行程, 出差安排, 旅遊規劃, 接待貴賓行程, 安排司機/航班), regardless of whether the traveler is a company executive/chairman (董事長) or an ordinary person — always apply the highest standard of thoroughness since the audience is unknown. Also use this skill when the user asks to reuse, update, or reference a saved travel profile (設定檔) for a named traveler (e.g. "用老闆的設定檔排行程"), or asks to save one after an intake.
+description: Plan detailed domestic or international travel/business itineraries at executive-grade thoroughness — covering flights, ground transportation and driver notifications, lodging, pacing, indoor/outdoor activity ratio, budget, and traveler mobility/dietary needs — then produce a polished standalone HTML itinerary. Use this skill whenever the user asks to plan a trip, business travel, or itinerary (排行程, 出差安排, 旅遊規劃, 接待貴賓行程, 安排司機/航班), regardless of whether the traveler is a company executive/chairman (董事長) or an ordinary person — always apply the highest standard of thoroughness since the audience is unknown. Also use this skill when the user asks to reuse, update, or reference a saved travel profile (設定檔) for a named traveler (e.g. "用老闆的設定檔排行程"), or asks to save one after an intake. Also use it when the user already has a draft or existing itinerary and wants it checked, corrected, expanded, or turned into a polished handbook (把這份行程做成手冊, 幫我核對/檢查這份行程, 行程整理成手冊, 舊行程要改).
 ---
 
 # 差旅 / 旅遊行程規劃 Travel Itinerary Planner
@@ -121,6 +121,47 @@ description: Plan detailed domestic or international travel/business itineraries
 - **只存「差旅規劃偏好」本身**(艙等偏好、步調、室內外比例接受度、預算區間、住宿等級、常見出發地、司機/座車安排習慣等),遵守記憶系統既有的隱私規則:**不要**記錄健康 / 身心障礙 / 種族 / 宗教 / 政治立場等敏感類別,即使使用者主動提供了「行動不便」這類與健康相關的描述,也只能轉化成規劃上要注意的中性事實(例如「偏好行程步調寬鬆、避免長時間步行」),不要寫成健康狀態或診斷。
 - 不要存單次性資訊(這次的目的地、日期、固定錨點、訂位編號)。
 - 若使用者不想存檔,直接進入 Step 4,不要追問第二次。
+
+### 設定檔的結構
+
+用固定結構寫,不要每次自由發揮 —— 下次 Step 1 要逐項摘要給使用者確認,結構不一致就沒辦法逐項對照:
+
+```markdown
+---
+aliases: [老闆, 董事長, Mr. Lin]
+---
+
+# 差旅規劃偏好
+
+## 交通
+- 艙等:商務艙,直飛優先
+- 機場接送:需要固定座車;聯絡窗口 <姓名/電話>
+- 市內:全程包車,習慣 10 小時制
+
+## 住宿
+- 五星級或同等,偏好鄰近主要行程地點
+- 房型:單人房
+
+## 步調與內容
+- 步調適中,室內外均衡,偏好較少步行但行程要實在
+- 內容偏好:自然景觀、文化古蹟、美食
+- 每日邊界:最早 09:00 出門,最晚 21:00 回飯店
+- 用餐時間:午餐 12:30、晚餐 18:30
+
+## 預算
+- 住宿高端不設限,餐飲彈性
+
+## 產出與交付
+- 需要可轉發給司機的接送摘要;訂位由特助執行
+
+## 同行者
+### 老闆娘(常同行)
+- 步調偏悠閒,需要每天安排回飯店休息約 1 小時
+### 特助(常同行)
+- 經濟艙即可;單人房
+```
+
+**多人團體的存法**:主要對象一個檔案,固定同行、但偏好與主要對象不同的人,記在主檔的「同行者」一節底下。若其中某人也常常單獨出差,就另外開一個屬於他自己的檔案,並在兩邊用 `[[ ]]` 互相連結,不要在兩處重複記錄同一組偏好(會出現兩邊不一致)。
 
 ## Step 4:蒐集實際資訊並排定行程
 
