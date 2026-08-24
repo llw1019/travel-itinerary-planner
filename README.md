@@ -21,10 +21,10 @@ with zipfile.ZipFile('travel-itinerary-planner.zip','w',zipfile.ZIP_DEFLATED) as
 |---|---|---|
 | `SKILL.md` | 流程(Step 0–8) | 永遠載入 |
 | `references/intake-questions.md` | 問卷題庫 A–H、設定檔儲存格式 | Step 2、Step 3 |
-| `references/research-and-scheduling.md` | 資料查證規則、排程方法 | Step 4,排每一天之前 |
+| `references/research-and-scheduling.md` | 資料查證規則、排程七步、限制回核 | Step 4,排每一天之前 |
 | `references/html-output-spec.md` | 14 個必含區塊的欄位規格、兩階段產出 | Step 5、Step 8 |
 | `references/editorial-standards.md` | 編輯判斷、用字與專有名詞 | Step 5,寫內容時 |
-| `references/output-checklist.md` | 硬擋 13 項 + 完整驗收清單 | Step 6,交付前 |
+| `references/output-checklist.md` | 硬擋 15 項 + 完整驗收清單(130 項) | Step 6,交付前 |
 
 ## 編修這個 skill 時要注意
 
@@ -39,6 +39,11 @@ with zipfile.ZipFile('travel-itinerary-planner.zip','w',zipfile.ZIP_DEFLATED) as
 | 主行程單一定案 + 備案獨立成章 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 移動獨立成行 | SKILL.md、research-and-scheduling.md、html-output-spec.md、output-checklist.md |
 | 天氣:預報 vs 歷史氣候 | SKILL.md、research-and-scheduling.md、output-checklist.md |
+| 限制回核(飲食/無障礙/體力/保密/語言/價位) | SKILL.md、research-and-scheduling.md、output-checklist.md |
+| 地圖連結的目的地適用性(中國大陸等不能用 Google Maps) | html-output-spec.md、output-checklist.md |
+| 交付回覆要講的五件事 | html-output-spec.md、output-checklist.md |
+
+跨檔引用一律用**描述性寫法**(「見編輯標準的主題附錄一節」),不要寫「第五節」——節一調整就過時,這在開發過程中已經發生兩次。
 
 另外:`SKILL.md` 的 frontmatter `description` 是 skill 的觸發條件。新增入口或情境(例如「核對既有行程」)時,要同步在 description 補對應的觸發詞,否則寫了流程但 skill 進不來。上限 1024 字元,目前約 976,加東西前先量。
 
