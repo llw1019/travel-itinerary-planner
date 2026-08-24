@@ -27,8 +27,9 @@ description: Plan detailed domestic or international travel/business itineraries
 2. **多輪問卷**,依 `references/intake-questions.md` 依序詢問。
 3. **雙重確認關卡**(Step 2.5):最終確認清單 + 詢問是否存檔,兩件事必須在同一則回覆內完成。
 4. **蒐集實際資訊**(航班/天氣/景點/營業時間/交通時間)並排定行程。
-5. **產出 HTML 旅遊手冊**,依 `references/html-output-spec.md`。
+5. **產出 HTML 旅遊手冊(詳細版)**,依 `references/html-output-spec.md`。
 6. **交付前對照 `references/output-checklist.md` 逐項自我檢查**,才呼叫 `present_files`。
+7. **列印版另外一個階段**:只在使用者確認詳細版的內容通過、並且明確要求之後才做。不要一次產兩份。
 
 ---
 
@@ -114,9 +115,11 @@ description: Plan detailed domestic or international travel/business itineraries
 5. 每一天要有**一句定調**,明顯偏緊的段落要寫出來它緊、並指出延誤時從哪一段吸收。整天時間軸沒有任何一句對節奏的判斷,就只是一張表格。
 6. 查到營業時間與行程衝突時,**把矛盾標出來交給使用者**,不可以默默挪時間、換項目或當作沒看到。
 
-## Step 5:產出 HTML 旅遊手冊
+## Step 5:產出 HTML 旅遊手冊(詳細版)
 
 依 `references/html-output-spec.md` 製作。摘要:先用 `view` 讀 `/mnt/skills/public/frontend-design/SKILL.md` 取得設計準則,再用 `create_file` 產出**單一 HTML 檔案**(CSS/JS 內嵌),存到 `/mnt/user-data/outputs/`。
+
+**只做詳細版,不要同時做列印版。** 內容還在修改的階段維護兩份,改一個時間、換一家餐廳都要改兩個檔案,成本翻倍而且很容易兩份不一致。列印版是 Step 7,等內容定案再說。
 
 必含 14 個區塊(製表資訊、行程總覽、一頁式速查總表、每日時間軸、航班、住宿、司機接送摘要、訂位狀態追蹤表、備案、費用估算、行前準備清單、實用資訊附錄與主題附錄、緊急頁、資料來源與免責),各區塊要有哪些欄位見規格檔;寫法見編輯標準檔。
 
@@ -127,3 +130,13 @@ description: Plan detailed domestic or international travel/business itineraries
 這一步不是形式。先前實測時反覆出現的問題,不是不知道標準,而是標準寫成散文之後每次都會漏掉其中幾項——存檔沒問、目的地憑假設帶入、內容密度不足、同行者偏好被單一化。逐項打勾才擋得住。
 
 任何一項答不出「有做到」,就回去補,不要先交付再說。
+
+## Step 7:列印版(選用,內容定案後才做)
+
+**觸發條件要同時成立**:使用者確認詳細版的內容通過了,而且明確要求列印版。兩個條件缺一就不要做。
+
+若使用者在一開始就說要列印本,還是先做詳細版,並說明「內容確認後再排列印版,避免內容還在改的時候維護兩份」。
+
+列印版不是把詳細版換個樣式,是為紙本重新編排(一個項目一頁、頁碼頁眉頁腳、指定版面尺寸、章節分隔頁)。規格見 `references/html-output-spec.md` 最後一節。
+
+做完後詳細版仍然保留,兩者用途不同。之後內容有變動,先改詳細版,確認後再同步列印版。
