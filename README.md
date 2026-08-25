@@ -17,6 +17,8 @@ claude
 
 skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 repo 就會自動載入,不需要安裝或設定。**問卷需要互動,所以要用互動模式**(直接 `claude`,不是 `claude -p`)。
 
+排行程過程中會做大量網頁查證(航班、營業時間、店家、天氣),第一次會遇到 `WebSearch` / `WebFetch` 的權限提示。這個 repo **刻意不預設任何權限允許清單** —— 要不要放行由你自己決定,可以選「本次允許」或加進你自己的設定。
+
 同一份檔案也可以打包上傳到 claude.ai 聊天介面使用 —— 打包指令見 [CLAUDE.md](CLAUDE.md)。skill 內建環境對應表,兩邊的流程與品質標準相同,只有工具名稱不同。
 
 **工作約定、環境限制、已否決的方向都在 [CLAUDE.md](CLAUDE.md)。** 這份 README 剩下的部分只放一件 CLAUDE.md 不放的東西:規則重述的同步表(它太長,不適合放進每個 session 都會載入的檔案)。
