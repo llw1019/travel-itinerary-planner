@@ -67,7 +67,9 @@ with zipfile.ZipFile('travel-itinerary-planner.zip','w',zipfile.ZIP_DEFLATED) as
 
 紙上 review 已收斂(最後幾個 commit 是編號與引用衛生,不是實質內容)。**尚未實跑過任何一次。**
 
-使用者曾提供兩份上海行程 PDF 當品質底標(放在未進 git 的 `ref/`),其內容已吸收進 `editorial-standards.md`,那個資料夾可以移除,不需要連帶改任何檔案。 三個具體的懷疑點只有實測才驗得出來:
+使用者曾提供兩份上海行程 PDF 當品質底標(放在未進 git 的 `ref/`),其內容已吸收進 `editorial-standards.md`,那個資料夾可以移除,不需要連帶改任何檔案。
+
+三個具體的懷疑點只有實測才驗得出來:
 
 1. 131 項的驗收清單會不會還是被跳著看
 2. 排程七步會不會被壓縮成「憑感覺排,然後回頭補理由」
