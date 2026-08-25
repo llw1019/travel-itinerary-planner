@@ -74,6 +74,7 @@ zip 內的路徑必須是 `travel-itinerary-planner/SKILL.md`(資料夾在最上
 - **設定檔自動套用** → 已改為逐項詢問式套用
 - **只在 B 類提醒「同行者需求可能不同」** → 已提升為 B–H 全類別通用原則
 - **放一份填了假資料的範例 HTML 當品質基準** → 會把捏造的班號店名寫進 skill,違反 skill 自己的規則;只放佔位符的空模板又無法示範密度且帶來樣板感。改用「單一時間軸項目的完整範例」+ 列印 CSS 片段
+- **在 Claude Code 把行程手冊發布成 artifact** → 使用者明確說要的是**本地檔案**。Claude Code 的交付是 `Write` 出完整 standalone HTML(含 `<meta charset="utf-8">`、字體不外連)存到工作目錄的 `itineraries/`,回覆給絕對路徑。**不要存到 session 的 scratchpad**(會被清掉),也不要擅自上傳。只有使用者明確要求才發 artifact。
 - **在 repo 加 `.claude/settings.json` 權限允許清單** → 使用者明確決定不加。skill 會做大量 `WebSearch`/`WebFetch`,clone 的人第一次跑會遇到權限提示,那是刻意的:不替不認識這個 repo 的人預設任何權限。**不要好心加回去。**
 - **照片與自行找圖** → 一律不自行找圖或嵌外部圖片(離線失效、多半禁止 hotlink),使用者主動提供檔案時才放。重點在文字面與行程完整度
 

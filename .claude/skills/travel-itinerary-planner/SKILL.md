@@ -27,7 +27,7 @@ description: Plan detailed domestic or international travel/business itineraries
 | 設定檔存取 | `memory_read` / `memory_write` / `memory_list`,路徑 `/people/<名稱>.md` | 系統提示裡指定的 memory 目錄 + `MEMORY.md` 索引,一個對象一個檔案。**注意這個目錄是按專案分的**,在別的資料夾開的 session 看不到這裡存的設定檔 |
 | 讀寫檔案 | `view` / `create_file` | `Read` / `Write` / `Edit` |
 | 視覺設計準則 | 讀 `/mnt/skills/public/frontend-design/SKILL.md` | 用 `Skill` 工具呼叫 `artifact-design` |
-| 交付手冊 | 存到 `/mnt/user-data/outputs/` + `present_files` | 寫成本地 HTML 檔 + `Artifact` 發布,交付一個可分享的網址 |
+| 交付手冊 | 存到 `/mnt/user-data/outputs/` + `present_files` | `Write` 出**完整 standalone 的本地 HTML 檔**(要有 `<!doctype>`/`<head>`/`<meta charset="utf-8">`,字體不外連),存在工作目錄的 `itineraries/`,回覆裡給絕對路徑。**不要發布成 artifact,除非使用者明確要求** |
 
 **只有這張表要換。流程、問卷內容、排程方法、編輯標準、驗收清單完全相同。**
 

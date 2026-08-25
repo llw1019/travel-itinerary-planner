@@ -159,13 +159,15 @@
 
 ## 六、檔案技術要求
 
-- [ ] 單一 HTML 檔,CSS/JS 全部內嵌
+- [ ] 單一 HTML 檔,CSS/JS 全部內嵌,**字體沒有外連**(Google Fonts 也不行,離線要能看)
+- [ ] (Claude Code)是**完整 standalone 文件**:`<!doctype html>`、`<html lang>`、`<head>`、**`<meta charset="utf-8">`**、`<meta viewport>`、`<body>` 齊全。少了 charset,本地開檔中文日文會亂碼
+- [ ] (Claude Code)檔案**不在 session 暫存/scratchpad 目錄**,存在使用者指定位置或工作目錄的 `itineraries/`,且回覆裡給了絕對路徑
 - [ ] **先取得視覺設計準則才開始做視覺**(claude.ai 讀 `/mnt/skills/public/frontend-design/SKILL.md`;Claude Code 用 `Skill` 呼叫 `artifact-design`),成品不是樣板感
 - [ ] 有基本 `@media print` 樣式,列印時日期分頁籤全部展開(不是只印出當前那一頁)
 - [ ] **只交付了詳細版一份**,沒有同時做列印版(列印版是內容定案後的另一個階段)
 - [ ] 離線可讀:地址、電話、營業時間都以文字寫在頁面上,沒有任何必要資訊只靠連結交代
 - [ ] 手機寬度可讀
-- [ ] 檔名含目的地 + 日期 + 版本;依環境交付(claude.ai:存 `/mnt/user-data/outputs/` + `present_files`。Claude Code:`Write` 出檔案後用 `Artifact` 發布,改版重用同一路徑讓網址不變,且檔案裡沒有自己寫 `<!doctype>`/`<html>`/`<head>`/`<body>`)
+- [ ] 檔名含目的地 + 日期 + 版本;依環境交付(claude.ai:存 `/mnt/user-data/outputs/` + `present_files`。Claude Code:交付本地檔案路徑,沒有擅自發布成 artifact)
 - [ ] **交付回覆講了五件事**:哪些是預設值或估算、訂位表最近的截止日、還需要使用者提供什麼、查證發現的矛盾與風險、清單裡決定不補的項目與理由
 
 ## 七、隱私

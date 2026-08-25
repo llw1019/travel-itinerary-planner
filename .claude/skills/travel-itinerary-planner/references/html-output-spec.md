@@ -28,16 +28,45 @@
 
 ### 在 Claude Code
 
+**交付的是一個本地 HTML 檔案。不要發布成 artifact,除非使用者明確要求。**
+
 1. 用 `Skill` 工具呼叫 `artifact-design` 取得視覺設計準則(同樣不能跳過)。
-2. 用 `Write` 寫出 HTML 檔。**`Artifact` 發布時會自動包上 `<!doctype html>`、`<html>`、`<head>`、`<body>`,所以檔案裡不要自己寫這四個標籤** —— 直接從 `<title>` 與內嵌 `<style>` 開始寫頁面內容。這樣的檔案用瀏覽器直接開也正常。
+2. 用 `Write` 寫出**完整的 standalone HTML 文件**(細節見下方)。
 3. 對照 `references/output-checklist.md` 逐項檢查(含編輯標準那一節)。
-4. 用 `Artifact` 發布,交付網址。發布時要給 `favicon` 與一句 `description`。
-5. 之後改版**用同一個檔案路徑重新發布**,網址不變,使用者的連結不會失效。改用別的路徑會變成另一份 artifact。
+4. 在回覆裡給出**檔案的完整絕對路徑**,讓使用者可以直接開啟。
 
-Claude Code 這條路徑的兩個額外注意事項:
+#### 存哪裡
 
-- **不能載外部資源**(Google Fonts 例外)。這跟原本「CSS/JS 全部內嵌」的要求一致,照做就不會違反。
-- **不要在頁面裡放要使用者下載的連結** —— artifact 檢視環境會擋掉頁面自己發起的下載。行程內容要直接呈現在頁面上,本來的「離線可讀」規則已經涵蓋這件事。
+**絕對不要存到 session 的暫存/scratchpad 目錄。** 那是給中間產物用的,會被清掉,而行程手冊是使用者要留下來的東西。
+
+依序判斷:
+
+1. 使用者指定了路徑 → 用他指定的
+2. 沒指定 → 存在**目前工作目錄**下的 `itineraries/` 子目錄(不存在就建立)
+3. 檔名照原規則含目的地 + 日期 + 版本
+
+#### 必須是完整的 standalone 文件
+
+因為交付的是本地檔案(用 `file://` 直接開),下面這幾項缺一個就會實際壞掉:
+
+```html
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>…</title>
+<style>/* 全部內嵌 */</style>
+</head>
+<body>
+…
+</body>
+</html>
+```
+
+- **`<meta charset="utf-8">` 是必須的。** 本地開檔沒有 HTTP header 指定編碼,瀏覽器會自己猜;繁中 Windows 猜錯就是整份中文與日文變亂碼。這是最容易壞、也最容易漏的一項。
+- **`<html lang>`、`<head>`、`<body>` 都要寫齊。** 瀏覽器雖然容錯,但不要依賴容錯。
+- **字體用系統字體堆疊,不要外連 Google Fonts 或任何外部資源。** 離線與沒網路時都要能正常顯示 —— 這跟原本「CSS/JS 全部內嵌、離線可讀」的要求一致。
 
 ---
 
