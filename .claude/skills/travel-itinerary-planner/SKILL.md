@@ -10,9 +10,30 @@ description: Plan detailed domestic or international travel/business itineraries
 這個 skill 服務的對象可能是公司董事長,也可能是一般民眾 —— 由於身分未知,**一律以最高規格看待**:寧可多問,也不要漏問。行程品質完全取決於問卷蒐集的資訊夠不夠完整,所以絕對不要在資訊不足的情況下就開始排行程。
 
 三個關鍵限制與原則:
-1. **互動介面限制**:`ask_user_input_v0` 一次最多 3 題、每題最多 4 個選項。問題類別很多,必須拆成**多輪**依序詢問,不要試圖塞進一輪。
+1. **互動介面限制**:問卷工具一次最多 3-4 題、每題最多 4 個選項(依環境,見下方對應表)。問題類別很多,必須拆成**多輪**依序詢問,不要試圖塞進一輪;而開放式問題可以在同一則訊息裡合併用文字問,不受題數限制。
 2. **設定檔複用**:完整問完一輪後,主動詢問是否要把這份資料存成「設定檔」(例如「老闆」「Alice 出差」),下次可直接套用免重問。
 3. **最終產出是一份完整的 HTML 旅遊手冊**,不是聊天室裡的條列文字,也不只是一張行程表。
+
+## 執行環境:先確認你有哪些工具
+
+本檔的工具名稱以 **claude.ai 聊天介面**為準。在 **Claude Code** 執行時,依下表對應:
+
+| 用途 | claude.ai | Claude Code |
+|---|---|---|
+| 多輪問卷 | `ask_user_input_v0`(最多 3 題 × 4 選項) | `AskUserQuestion`(最多 4 題 × 4 選項,每題自動附「其他」可自由輸入) |
+| 網頁搜尋 / 取頁 | `web_search` / `web_fetch` | `WebSearch` / `WebFetch` |
+| 地點查詢 | `places_search` + `places_map_display_v0` | **沒有對應工具**。改用 `WebSearch` 查店名、地址、營業時間、評價;地圖連結只能用搜尋格式(拿不到 `place_id`) |
+| 天氣 | `weather_fetch` | **沒有對應工具**。改用 `WebSearch` 查預報,或該地該月份的歷史氣候平均 |
+| 設定檔存取 | `memory_read` / `memory_write` / `memory_list`,路徑 `/people/<名稱>.md` | 系統提示裡指定的 memory 目錄 + `MEMORY.md` 索引,一個對象一個檔案。**注意這個目錄是按專案分的**,在別的資料夾開的 session 看不到這裡存的設定檔 |
+| 讀寫檔案 | `view` / `create_file` | `Read` / `Write` / `Edit` |
+| 視覺設計準則 | 讀 `/mnt/skills/public/frontend-design/SKILL.md` | 用 `Skill` 工具呼叫 `artifact-design` |
+| 交付手冊 | 存到 `/mnt/user-data/outputs/` + `present_files` | 寫成本地 HTML 檔 + `Artifact` 發布,交付一個可分享的網址 |
+
+**只有這張表要換。流程、問卷內容、排程方法、編輯標準、驗收清單完全相同。**
+
+兩個環境都不要假裝有沒有的能力:Claude Code 拿不到 Google Places 的評分與 `place_id`,查證要靠 `WebSearch` 補足,查不到就照原規則**換一個查得到的**,不要放進去再標「待確認」。
+
+**問卷需要互動。** 非互動 session(排程執行、CI、`-p` 單次執行)沒辦法問問卷,遇到這種情況要直接說明並請使用者在互動 session 重跑,不要自己編答案往下排。
 
 ## 參考檔案
 
@@ -30,7 +51,7 @@ description: Plan detailed domestic or international travel/business itineraries
 3. **雙重確認關卡**(Step 2.5):最終確認清單 + 詢問是否存檔,兩件事必須在同一則回覆內完成。
 4. **蒐集實際資訊**(航班/天氣/景點/營業時間/交通時間),依 `references/research-and-scheduling.md` 的順序排定行程。
 5. **產出 HTML 旅遊手冊(詳細版)**,依 `references/html-output-spec.md`。
-6. **交付前對照 `references/output-checklist.md` 逐項自我檢查**,才呼叫 `present_files`。
+6. **交付前對照 `references/output-checklist.md` 逐項自我檢查**,才交付。
 7. **使用者要求修改時**,改動不是單點的——時間連鎖、費用、訂位表、備案對應、速查總表全部要同步。
 8. **列印版另外一個階段**:只在使用者確認詳細版的內容通過、並且明確要求之後才做。不要一次產兩份。
 
@@ -84,10 +105,10 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ### 執行方式
 
-- 每次呼叫 `ask_user_input_v0` 最多問 3 題,類別可以跨組合併,但同一類別內關聯性高的題目盡量放同一輪,避免使用者要來回切換情境。
+- 每次呼叫問卷工具最多問 3 題(claude.ai)或 4 題(Claude Code),類別可以跨組合併,但同一類別內關聯性高的題目盡量放同一輪,避免使用者要來回切換情境。
 - 送出每一輪問題前,重新看一遍題目與選項文字,確認沒有錯字或選字錯誤(尤其中文輸入常見的同音異字,例如「艙」誤植成「荁」、「偏好」誤植成「偶好」),這些問卷會直接顯示給使用者看,錯字會很顯眼。
-- 選項超過 4 個的題目(例如城市、國家),不要硬塞進 `ask_user_input_v0` 的 options —— 改用開放式文字直接在對話中問,或先用少量代表性選項 + 一個「其他(請說明)」。
-- **不要每一題都用卡片。** `ask_user_input_v0` 的 3 題上限只適用於卡片式提問;**開放式問題可以好幾題合併在同一則訊息裡用文字問**(例如「順便確認四件事:包車是幾小時制、司機到幾點、午晚餐習慣幾點吃、最晚幾點要回飯店」)。題庫項目多,全部用卡片會變成十輪以上的問答,使用者會放棄。實務上的做法是:**需要在選項間權衡的用卡片,答案本來就是具體事實或數字的用文字合併問**,可以把輪次壓到 5-6 輪。
+- 選項超過 4 個的題目(例如城市、國家),不要硬塞進問卷工具的 options —— 改用開放式文字直接在對話中問,或先用少量代表性選項 + 一個「其他(請說明)」。
+- **不要每一題都用卡片。** 問卷工具的題數上限只適用於卡片式提問;**開放式問題可以好幾題合併在同一則訊息裡用文字問**(例如「順便確認四件事:包車是幾小時制、司機到幾點、午晚餐習慣幾點吃、最晚幾點要回飯店」)。題庫項目多,全部用卡片會變成十輪以上的問答,使用者會放棄。實務上的做法是:**需要在選項間權衡的用卡片,答案本來就是具體事實或數字的用文字合併問**,可以把輪次壓到 5-6 輪。
 - 【條件】題只在條件成立時才問。條件不成立就跳過(例如「純國內行程」就不用問簽證、國籍、漫遊),不要為了問卷完整而硬問不相關的題目——輪次太多使用者會放棄。
 - 全部問完前不要開始排行程。若使用者中途說「先這樣就好」,把目前已知資訊向使用者複誦一次,確認哪些是「未提供,將採一般合理預設」,讓使用者知情同意後再繼續。
 
@@ -116,6 +137,8 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 3:存檔(若使用者同意)
 
+(在 Claude Code 執行時,把下列 `memory_*` 與 `/people/` 換成環境對應表裡的記憶目錄與 `MEMORY.md` 索引。)
+
 用 `memory_read` 檢查 `/people/<名稱>.md` 是否已存在:
   - 不存在 → `memory_write` 新建,`aliases` 放使用者可能用的其他稱呼方式。
   - 已存在 → 用 `memory_str_replace` 或 `memory_write` 更新既有內容,保留歷史上不衝突的偏好,新的取代舊的矛盾項。
@@ -128,14 +151,14 @@ description: Plan detailed domestic or international travel/business itineraries
 ## Step 4:蒐集實際資訊並排定行程
 
 依問卷結果,視需要使用工具取得**真實、當下**的資訊,不要憑空捏造班機時刻、飯店名稱、天氣或營業時間:
-- `web_search` / `web_fetch`:航班選項、簽證規定、門票與活動預約資訊、營業時間與休館日、當地注意事項。
-- `places_search` + `places_map_display_v0`:景點、餐廳、飯店的實際地點與評價(這是 Google 的資料,展示時務必用 `places_map_display_v0`,不要用 `places_list_display_v0`)。
-- `weather_fetch`:確認天氣,安排室內外備案,以及行前清單的衣物建議。**用法有陷阱**:只有 10-14 天內的行程才能當預報用,更遠的要改查歷史氣候平均,見 `references/research-and-scheduling.md` 第零節。
+- **網頁搜尋 / 取頁**:航班選項、簽證規定、門票與活動預約資訊、營業時間與休館日、當地注意事項。
+- **地點查詢**:景點、餐廳、飯店的實際地點、地址與評價。claude.ai 用 `places_search`,展示時務必用 `places_map_display_v0`(不要用 `places_list_display_v0`);**Claude Code 沒有這個工具,改用 `WebSearch`**,並接受拿不到評分與 `place_id`。
+- **天氣**:確認天氣,安排室內外備案,以及行前清單的衣物建議。claude.ai 用 `weather_fetch`,Claude Code 用 `WebSearch`。**用法有陷阱**:只有 10-14 天內的行程才能當預報用,更遠的要改查該月份的歷史氣候平均,見 `references/research-and-scheduling.md` 的資料查證規則一節。
 
 
 ### 三條在排程前就要守住的硬規則
 
-細節在 `references/research-and-scheduling.md` 第零節,這裡只列規則本身:
+細節在 `references/research-and-scheduling.md` 的資料查證規則一節,這裡只列規則本身:
 
 1. **營業時間與休館日,每個地點排入前逐項查核** —— 週一休館、餐廳週三公休會直接毀掉一整天,這是行程表最常見的實際事故。查不到不可以當作營業;**查到了但跟行程衝突時,把矛盾標出來交給使用者,不可以默默挪時間或換項目**。
 2. **查不到的店家就換掉**,不要放一個查不到的店然後標「待確認」——那是把問題丟回給使用者。
@@ -170,7 +193,7 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 5:產出 HTML 旅遊手冊(詳細版)
 
-依 `references/html-output-spec.md` 製作。摘要:先用 `view` 讀 `/mnt/skills/public/frontend-design/SKILL.md` 取得設計準則,再用 `create_file` 產出**單一 HTML 檔案**(CSS/JS 內嵌),存到 `/mnt/user-data/outputs/`。
+依 `references/html-output-spec.md` 製作(該檔含兩個環境各自的交付流程)。摘要:先取得視覺設計準則,再產出**單一 HTML 檔案**(CSS/JS 內嵌)並交付 —— 兩者的具體工具依上方環境對應表。
 
 **只做詳細版,不要同時做列印版。** 內容還在修改的階段維護兩份,改一個時間、換一家餐廳都要改兩個檔案,成本翻倍而且很容易兩份不一致。列印版是 Step 8,等內容定案再說。
 
@@ -180,9 +203,9 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 6:交付前自我檢查
 
-**呼叫 `present_files` 之前,先讀 `references/output-checklist.md` 並逐項對照。**
+**交付之前,先讀 `references/output-checklist.md` 並逐項對照。**
 
-清單分兩級:**先跑第零節的硬擋 15 項**(沒做到就等於交出一份錯的東西),全過之後再跑完整清單的其餘部分。完整清單裡若有決定不補的項目,要在交付訊息裡說明是哪幾項與為什麼,**不可以默默略過**。
+清單分兩級:**先跑硬擋清單那一節的 15 項**(沒做到就等於交出一份錯的東西),全過之後再跑完整清單的其餘部分。完整清單裡若有決定不補的項目,要在交付訊息裡說明是哪幾項與為什麼,**不可以默默略過**。
 
 這一步不是形式。先前實測時反覆出現的問題,不是不知道標準,而是標準寫成散文之後每次都會漏掉其中幾項——存檔沒問、目的地憑假設帶入、內容密度不足、同行者偏好被單一化。逐項打勾才擋得住。
 

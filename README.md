@@ -1,8 +1,25 @@
 # travel-itinerary-planner
 
-差旅／旅遊行程規劃的 Claude skill 原始碼。`travel-itinerary-planner/` 是要打包上傳到 claude.ai 的資料夾。
+差旅／旅遊行程規劃的 Claude skill。問卷蒐集資訊後排出行程,產出比旅行社行程單更詳細的 HTML 旅遊手冊。
 
-**工作約定、環境限制、已否決的方向、打包指令都在 [CLAUDE.md](CLAUDE.md)。** 這份 README 只放一件 CLAUDE.md 不放的東西:規則重述的同步表(它太長,不適合放進每個 session 都會載入的檔案)。
+## 立刻開始用
+
+```bash
+git clone <this-repo> && cd travel-itinerary-planner
+claude
+```
+
+然後直接說你要什麼:
+
+- 「幫我排三天東京」
+- 「幫老闆排一趟上海出差,九月四號到八號,要去傢俱展」
+- 「把這份行程做成手冊」/「幫我核對這份行程有沒有問題」
+
+skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 repo 就會自動載入,不需要安裝或設定。**問卷需要互動,所以要用互動模式**(直接 `claude`,不是 `claude -p`)。
+
+同一份檔案也可以打包上傳到 claude.ai 聊天介面使用 —— 打包指令見 [CLAUDE.md](CLAUDE.md)。skill 內建環境對應表,兩邊的流程與品質標準相同,只有工具名稱不同。
+
+**工作約定、環境限制、已否決的方向都在 [CLAUDE.md](CLAUDE.md)。** 這份 README 剩下的部分只放一件 CLAUDE.md 不放的東西:規則重述的同步表(它太長,不適合放進每個 session 都會載入的檔案)。
 
 ## 規則重述同步表
 

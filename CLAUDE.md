@@ -1,33 +1,43 @@
 # travel-itinerary-planner
 
-這個 repo 是一個 **Claude skill 的原始碼**,不是應用程式。`travel-itinerary-planner/` 就是要打包上傳到 claude.ai 的資料夾。skill 的用途:差旅／旅遊行程規劃,問卷蒐集後排出行程,產出比旅行社行程單更詳細的 HTML 旅遊手冊。
+差旅／旅遊行程規劃的 Claude skill。**clone 這個 repo、在裡面開 Claude Code,就可以直接開始排行程** —— skill 放在 `.claude/skills/travel-itinerary-planner/`,Claude Code 會自動載入。
 
-## 最重要的一件事:這個 skill 的執行環境不是這裡
+使用者說「幫我排三天東京」「幫老闆排一趟出差」「把這份行程做成手冊」「幫我核對這份行程」都會觸發它。
 
-SKILL.md 與 references 裡引用的工具與路徑全部是 **claude.ai 聊天介面專屬,在 Claude Code 不存在**:
+## 這個 repo 是什麼
 
-`ask_user_input_v0`、`places_search`、`places_map_display_v0`、`weather_fetch`、`memory_read` / `memory_write` / `memory_list` / `memory_str_replace`、`present_files`、`view`、`create_file`、`/mnt/skills/public/frontend-design/SKILL.md`、`/mnt/user-data/outputs/`
+`.claude/skills/travel-itinerary-planner/` 同時是兩件事:
 
-**它們是對的。不要因為在這個工作區找不到,就把它們當成錯誤而移除或改寫。**
+1. **可直接使用的 Claude Code skill**(clone 就能用)
+2. **要打包上傳到 claude.ai 的 skill 原始碼**
 
-這條規則的用途是**擋住錯誤的編輯決定**,不是拿來當開場白。除非使用者真的想在這裡執行 skill(要求排行程、跑問卷、產 HTML),**不要在回覆開頭放環境說明** —— 問 zip 是不是最新的、要求改某一條規則,就直接回答那件事。
+只有一份,沒有副本,所以不會有兩邊不同步的問題。
 
-實際限制只有一條:在 Claude Code 只能編修檔案,無法實跑問卷互動、設定檔套用或 HTML 產出;要測試得打包上傳到 claude.ai。
+## skill 支援兩個執行環境
+
+SKILL.md 的工具名稱以 claude.ai 聊天介面為準,檔案開頭有一張**環境對應表**,列出在 Claude Code 要換成哪些工具(`AskUserQuestion`、`WebSearch`、`Artifact`、記憶目錄等)。流程與所有品質標準兩邊完全相同,只有工具名稱不同。
+
+編修時的注意事項:
+
+- **不要因為某個工具在這個工作區不存在,就把它當成錯誤刪掉。** `places_search`、`weather_fetch`、`present_files`、`/mnt/skills/...` 都是 claude.ai 專屬,它們是對的
+- 反過來,**新增任何用到工具的規則時,要同時在環境對應表補上另一個環境的做法**,或明確寫出該環境沒有這個能力、要怎麼降級
+- Claude Code 少兩個能力:沒有地點查詢(拿不到 Google 評分與 `place_id`)、沒有天氣工具。兩者都用 `WebSearch` 補,查不到就照原規則換一個查得到的
+- **問卷需要互動 session。** 非互動執行(`-p`、排程、CI)跑不了問卷
 
 ## 檔案分工
 
 | 檔案 | 職責 | skill 執行時何時讀 |
 |---|---|---|
-| `travel-itinerary-planner/SKILL.md` | 流程 Step 0–8 | 永遠載入 |
+| `SKILL.md` | 環境對應表、流程 Step 0–8 | 永遠載入 |
 | `references/intake-questions.md` | 問卷題庫 A–H、A-2 事由分支、設定檔儲存格式 | Step 2、Step 3 |
 | `references/research-and-scheduling.md` | 資料查證規則、排程七步、限制回核 | Step 4,排每一天之前 |
-| `references/html-output-spec.md` | 14 個必含區塊的欄位規格、兩階段產出 | Step 5、Step 8 |
+| `references/html-output-spec.md` | 14 個必含區塊的欄位規格、兩環境交付流程、兩階段產出 | Step 5、Step 8 |
 | `references/editorial-standards.md` | 編輯判斷、推薦理由寫法、用字與專有名詞 | Step 5,寫內容時 |
 | `references/output-checklist.md` | 硬擋 15 項 + 完整驗收清單(131 項) | Step 6,交付前 |
 
 ## 編修守則
 
-**規則的權威來源是 reference 檔,不是 SKILL.md。** SKILL.md 只重述歷史上最常被違反的少數規則(讓永遠載入的部分帶著最關鍵的約束),其餘一律以 reference 檔為準。改規則要改 reference,再回頭檢查有沒有別處重述同一條 —— 已知的重述清單在 `README.md`。
+**規則的權威來源是 reference 檔,不是 SKILL.md。** SKILL.md 只重述歷史上最常被違反的少數規則,其餘一律以 reference 檔為準。改規則要改 reference,再回頭檢查有沒有別處重述同一條 —— 已知的重述清單在 `README.md`。
 
 **這個 repo 歷史上重複發生過的錯誤是「改一端忘了另一端」,發生過三次:**
 
@@ -36,22 +46,26 @@ SKILL.md 與 references 裡引用的工具與路徑全部是 **claude.ai 聊天�
 3. 加新的**入口或情境**之後,回頭補 frontmatter `description` 的觸發詞(上限 1024,目前約 976)。否則寫了流程但 skill 根本進不來。
 
 其他約定:
+
 - 跨檔引用一律用**描述性寫法**(「見編輯標準的主題附錄一節」),不要寫「第五節」—— 節一調整就過時,已經發生兩次
 - 加規則之前先想清楚它會不會讓問卷輪次或驗收清單膨脹到被跳著看。題庫已 ~80 項、清單已 131 項,**再加東西要同時說明怎麼維持可用**
-- 檔案一律 UTF-8 無 BOM。改完用 `python` 檢查 `chr(0xFFFD)` 與 BOM
+- 檔案一律 UTF-8 無 BOM
 
-## 打包
+## 打包上傳到 claude.ai
 
 ```bash
 python -c "
 import zipfile, os
+src = '.claude/skills/travel-itinerary-planner'
 with zipfile.ZipFile('travel-itinerary-planner.zip','w',zipfile.ZIP_DEFLATED) as z:
-    for r,d,fs in os.walk('travel-itinerary-planner'):
-        for f in sorted(fs): z.write(os.path.join(r,f), os.path.join(r,f).replace(os.sep,'/'))
+    for r,d,fs in os.walk(src):
+        for f in sorted(fs):
+            p = os.path.join(r,f)
+            z.write(p, os.path.relpath(p, '.claude/skills').replace(os.sep,'/'))
 "
 ```
 
-**不要用 Windows PowerShell 5.1 的 `Compress-Archive`** —— 它把路徑分隔符寫成反斜線,部分解壓工具會把整個路徑當成一個檔名,導致 `references/` 子目錄結構丟失。
+zip 內的路徑必須是 `travel-itinerary-planner/SKILL.md`(資料夾在最上層)。**不要用 Windows PowerShell 5.1 的 `Compress-Archive`** —— 它把路徑分隔符寫成反斜線,部分解壓工具會把整個路徑當成一個檔名,`references/` 子目錄結構會丟失。
 
 ## 已否決的方向(不要再提)
 
@@ -60,19 +74,14 @@ with zipfile.ZipFile('travel-itinerary-planner.zip','w',zipfile.ZIP_DEFLATED) as
 - **設定檔自動套用** → 已改為逐項詢問式套用
 - **只在 B 類提醒「同行者需求可能不同」** → 已提升為 B–H 全類別通用原則
 - **放一份填了假資料的範例 HTML 當品質基準** → 會把捏造的班號店名寫進 skill,違反 skill 自己的規則;只放佔位符的空模板又無法示範密度且帶來樣板感。改用「單一時間軸項目的完整範例」+ 列印 CSS 片段
-- **照片與自行找圖** → 一律不自行找圖或嵌外部圖片(離線失效、多半禁止 hotlink),使用者主動提供檔案時才放。使用者已明確表示照片不必,重點在文字面與行程完整度
+- **照片與自行找圖** → 一律不自行找圖或嵌外部圖片(離線失效、多半禁止 hotlink),使用者主動提供檔案時才放。重點在文字面與行程完整度
 
+## 現況
 
-## 現況與下一步
-
-紙上 review 已收斂(最後幾個 commit 是編號與引用衛生,不是實質內容)。**尚未實跑過任何一次。**
-
-使用者曾提供兩份上海行程 PDF 當品質底標(放在未進 git 的 `ref/`),其內容已吸收進 `editorial-standards.md`,那個資料夾可以移除,不需要連帶改任何檔案。
-
-三個具體的懷疑點只有實測才驗得出來:
+紙上 review 已收斂。**skill 從未實跑過完整一輪。** 三個懷疑點只有實測才驗得出來:
 
 1. 131 項的驗收清單會不會還是被跳著看
 2. 排程七步會不會被壓縮成「憑感覺排,然後回頭補理由」
 3. 限制回核會不會變成打勾儀式,沒有真的逐項對
 
-建議用跟 ref 同一個情境實跑(上海五日、CIFF 傢俱展、包車、華爾道夫五星),直接跟那兩份 PDF 對照。
+使用者曾提供兩份上海行程 PDF 當品質底標(未進 git 的 `ref/`),內容已吸收進 `editorial-standards.md`,那個資料夾可以移除,不需連帶改任何檔案。
