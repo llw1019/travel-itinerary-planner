@@ -8,11 +8,11 @@ SKILL.md 與 references 裡引用的工具與路徑全部是 **claude.ai 聊天�
 
 `ask_user_input_v0`、`places_search`、`places_map_display_v0`、`weather_fetch`、`memory_read` / `memory_write` / `memory_list` / `memory_str_replace`、`present_files`、`view`、`create_file`、`/mnt/skills/public/frontend-design/SKILL.md`、`/mnt/user-data/outputs/`
 
-**它們是對的。不要因為在這個工作區找不到,就把它們當成錯誤而移除或改寫。** 這是這個 repo 最容易犯的錯。
+**它們是對的。不要因為在這個工作區找不到,就把它們當成錯誤而移除或改寫。**
 
-因此:
-- 在 Claude Code 只能**編修檔案**(純文字工作)
-- **無法**實跑問卷互動、設定檔套用、HTML 產出 —— 要測試必須打包上傳到 claude.ai 聊天介面
+這條規則的用途是**擋住錯誤的編輯決定**,不是拿來當開場白。除非使用者真的想在這裡執行 skill(要求排行程、跑問卷、產 HTML),**不要在回覆開頭放環境說明** —— 問 zip 是不是最新的、要求改某一條規則,就直接回答那件事。
+
+實際限制只有一條:在 Claude Code 只能編修檔案,無法實跑問卷互動、設定檔套用或 HTML 產出;要測試得打包上傳到 claude.ai。
 
 ## 檔案分工
 
@@ -62,20 +62,12 @@ with zipfile.ZipFile('travel-itinerary-planner.zip','w',zipfile.ZIP_DEFLATED) as
 - **放一份填了假資料的範例 HTML 當品質基準** → 會把捏造的班號店名寫進 skill,違反 skill 自己的規則;只放佔位符的空模板又無法示範密度且帶來樣板感。改用「單一時間軸項目的完整範例」+ 列印 CSS 片段
 - **照片與自行找圖** → 一律不自行找圖或嵌外部圖片(離線失效、多半禁止 hotlink),使用者主動提供檔案時才放。使用者已明確表示照片不必,重點在文字面與行程完整度
 
-## `ref/`(品質基準,未進 git)
-
-使用者提供的兩份上海行程 PDF,是「至少要做到這個程度」的底標,體積 21MB 所以沒進 git:
-
-- `上海行程_完整指南.pdf` —— 14 頁、15,003 字、0 張圖。p.1 五天完整時間軸壓在一頁,後面每頁 2 個項目的深度介紹,再接備案 3 頁、住宿 1 頁
-- `上海五日手冊_B5.pdf` —— 34 頁、約 80 張圖、18.7MB。一個項目一頁,有頁碼頁眉頁腳與附錄
-
-要讀內容得先 `python -m pip install pypdf`(預設沒裝,也沒有 poppler,Read 工具無法直接讀 PDF)。
-
-skill 的欄位覆蓋已超過這兩份(它們沒有緊急頁、行前清單、訂位追蹤表、費用總估),ref 的強項在編輯判斷與敘事密度,那部分已寫進 `editorial-standards.md`。
 
 ## 現況與下一步
 
-紙上 review 已收斂(最後幾個 commit 是編號與引用衛生,不是實質內容)。**尚未實跑過任何一次。** 三個具體的懷疑點只有實測才驗得出來:
+紙上 review 已收斂(最後幾個 commit 是編號與引用衛生,不是實質內容)。**尚未實跑過任何一次。**
+
+使用者曾提供兩份上海行程 PDF 當品質底標(放在未進 git 的 `ref/`),其內容已吸收進 `editorial-standards.md`,那個資料夾可以移除,不需要連帶改任何檔案。 三個具體的懷疑點只有實測才驗得出來:
 
 1. 131 項的驗收清單會不會還是被跳著看
 2. 排程七步會不會被壓縮成「憑感覺排,然後回頭補理由」
