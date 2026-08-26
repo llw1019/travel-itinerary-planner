@@ -247,7 +247,13 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 8:加入使用者提供的圖片(選用)
 
-手冊預設純文字。**絕對不要自己找圖或嵌外部圖片** —— 離線失效、多半禁止 hotlink、來源不明的圖不該放進使用者的行程文件。但使用者自己的圖片是另一回事,交付時要**主動問**他要不要加(見 `references/html-output-spec.md` 的交付回覆一節)。
+手冊預設純文字。圖片來源分三類,**規則不同,不要一律禁止也不要一律允許**:
+
+- 使用者提供的檔案 → 可以
+- **明確標示自由授權的圖片**(Wikimedia Commons 的 CC BY / CC BY-SA / CC0、公有領域)→ 可以,但**必須下載內嵌並在圖說標明作者與授權條款**,漏標就是違反授權
+- 一般網路圖片、店家官網照片、社群貼文 → **不可以**
+
+**任何情況都不要熱連外部圖片。** 詳見 `references/html-output-spec.md`。交付時要**主動問**使用者要不要加圖(見交付回覆一節)。
 
 使用者說要 → 依 `references/html-output-spec.md` 的「加入使用者提供的圖片」一節執行。流程摘要:
 
