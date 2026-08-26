@@ -24,7 +24,7 @@ description: Plan detailed domestic or international travel/business itineraries
 | 網頁搜尋 / 取頁 | `web_search` / `web_fetch` | `WebSearch` / `WebFetch` |
 | 地點查詢 | `places_search` + `places_map_display_v0` | **沒有對應工具**。改用 `WebSearch` 查店名、地址、營業時間、評價;地圖連結只能用搜尋格式(拿不到 `place_id`) |
 | 天氣 | `weather_fetch` | **沒有對應工具**。改用 `WebSearch` 查預報,或該地該月份的歷史氣候平均 |
-| 設定檔存取 | `memory_read` / `memory_write` / `memory_list`,路徑 `/people/<名稱>.md` | 系統提示裡指定的 memory 目錄 + `MEMORY.md` 索引,一個對象一個檔案。**注意這個目錄是按專案分的**,在別的資料夾開的 session 看不到這裡存的設定檔 |
+| 設定檔存取 | `memory_read` / `memory_write` / `memory_list`,路徑 `/people/<名稱>.md` | **專案根目錄下的 `profiles/<名稱>.md`**(含 `.claude/` 的那一層)。用 `Glob` 列出 `profiles/*.md`、`Read` 讀、`Write`/`Edit` 寫。目錄不存在就建立。**不要用 Claude Code 的記憶目錄** —— 設定檔要放在使用者看得到、改得動、備份得了的地方 |
 | 讀寫檔案 | `view` / `create_file` | `Read` / `Write` / `Edit` |
 | 視覺設計準則 | 讀 `/mnt/skills/public/frontend-design/SKILL.md` | 用 `Skill` 工具呼叫 `artifact-design` |
 | 交付手冊 | 存到 `/mnt/user-data/outputs/` + `present_files` | **預設交付本地檔案**:`Write` 出完整 standalone HTML(要有 `<!doctype>`/`<head>`/`<meta charset="utf-8">`,字體不外連),存在工作目錄的 `itineraries/`,回覆裡給絕對路徑。**同一則回覆要問「要不要另外發布成 artifact 取得可分享網址」;沒得到同意就只交付本地檔案** |
@@ -84,9 +84,12 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 1:檢查既有設定檔
 
-先用 `memory_list`(path_prefix `/people/`)看看有沒有先前存過的旅遊設定檔(檔名會是人名或代稱,例如 `/people/老闆.md`,內容會包含「差旅偏好」相關描述)。
+先看看有沒有先前存過的旅遊設定檔(檔名是人名或代稱,例如 `老闆.md`,內容包含「差旅偏好」相關描述):
 
-- 使用者若提到了具體的人名/代稱(例如「幫老闆排一趟東京行程」),直接找對應檔案 `memory_read`。
+- claude.ai:`memory_list`(path_prefix `/people/`)
+- Claude Code:`Glob` 列出 `profiles/*.md`。目錄不存在就代表還沒有任何設定檔,直接進 Step 2
+
+- 使用者若提到了具體的人名/代稱(例如「幫老闆排一趟東京行程」),直接讀對應檔案。
 - 找到既有設定檔時,**不要自動套用**——先把內容摘要給使用者看,明確詢問「這些是上次記錄的偏好,這次要沿用嗎?還是有變動?」讓使用者逐項確認或指出要更新的部分(偏好可能會隨時間改變,不能假設一定還適用)。
   - 使用者確認沿用的部分,直接帶入,不用重問。
   - 使用者說要調整的部分,重新問過。
@@ -137,15 +140,16 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 3:存檔(若使用者同意)
 
-(在 Claude Code 執行時,把下列 `memory_*` 與 `/people/` 換成環境對應表裡的記憶目錄與 `MEMORY.md` 索引。)
+(在 Claude Code 執行時,把下列 `memory_*` 與 `/people/` 換成專案根目錄的 `profiles/`,用 `Read` / `Write` / `Edit` 操作。)
 
-用 `memory_read` 檢查 `/people/<名稱>.md` 是否已存在:
+檢查 `/people/<名稱>.md`(Claude Code:`profiles/<名稱>.md`)是否已存在:
   - 不存在 → `memory_write` 新建,`aliases` 放使用者可能用的其他稱呼方式。
   - 已存在 → 用 `memory_str_replace` 或 `memory_write` 更新既有內容,保留歷史上不衝突的偏好,新的取代舊的矛盾項。
 - **只存「差旅規劃偏好」本身**(艙等偏好、步調、室內外比例接受度、預算區間、住宿等級、常見出發地、司機/座車安排習慣等),遵守記憶系統既有的隱私規則:**不要**記錄健康 / 身心障礙 / 種族 / 宗教 / 政治立場等敏感類別,即使使用者主動提供了「行動不便」這類與健康相關的描述,也只能轉化成規劃上要注意的中性事實(例如「偏好行程步調寬鬆、避免長時間步行」),不要寫成健康狀態或診斷。
 - 不要存單次性資訊(這次的目的地、日期、固定錨點、訂位編號)。
 - 若使用者不想存檔,直接進入 Step 4,不要追問第二次。
 - **設定檔的固定結構與多人團體的存法**見 `references/intake-questions.md` 最後一節,照那個結構寫,不要每次自由發揮。
+- (Claude Code)`profiles/` 裡是使用者的個人偏好資料,**不該進版本控制**。寫檔前確認它已被 `.gitignore` 排除,沒有的話先加再寫,並在回覆裡說明。存好之後把檔案路徑告訴使用者,他才知道東西放在哪、可以自己改。
 
 
 ## Step 4:蒐集實際資訊並排定行程

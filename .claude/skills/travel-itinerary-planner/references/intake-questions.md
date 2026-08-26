@@ -161,6 +161,9 @@
 
 ## 設定檔的儲存格式
 
+存放位置:claude.ai 是 `/people/<名稱>.md`;Claude Code 是**專案根目錄下的 `profiles/<名稱>.md`**(要被 `.gitignore` 排除)。
+
+
 用固定結構寫,不要每次自由發揮 —— 下次 Step 1 要逐項摘要給使用者確認,結構不一致就沒辦法逐項對照:
 
 ```markdown

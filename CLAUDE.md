@@ -35,6 +35,19 @@ SKILL.md 的工具名稱以 claude.ai 聊天介面為準,檔案開頭有一張**
 | `references/editorial-standards.md` | 編輯判斷、推薦理由寫法、用字與專有名詞 | Step 5,寫內容時 |
 | `references/output-checklist.md` | 硬擋 15 項 + 完整驗收清單(131 項) | Step 6,交付前 |
 
+## 執行時產生的資料存哪裡
+
+skill 跑起來會產生兩種要留下來的東西。**兩者都放在專案根目錄下、使用者看得到的地方,而且都被 `.gitignore` 排除 —— repo 裡只有乾淨的 skill 原始碼,不含任何個人資料。**
+
+| 資料 | 位置 | 內容 |
+|---|---|---|
+| 行程手冊 | `itineraries/` | 產出的 HTML,含訂房編號、聯絡電話、完整費用 |
+| 旅遊設定檔 | `profiles/<名稱>.md` | 各對象的差旅偏好(艙等、步調、預算、用餐時間等) |
+
+兩個目錄都由 skill 在需要時自行建立。**不要把設定檔寫進 Claude Code 的記憶目錄**(`~/.claude/projects/.../memory/`)—— 那裡使用者看不到也改不動,而且按專案分、不好備份。
+
+新增任何會落地存檔的資料類型時,照同一個原則:放在專案根目錄下可見的位置,加進 `.gitignore`,並在交付訊息告訴使用者路徑。
+
 ## 編修守則
 
 **規則的權威來源是 reference 檔,不是 SKILL.md。** SKILL.md 只重述歷史上最常被違反的少數規則,其餘一律以 reference 檔為準。改規則要改 reference,再回頭檢查有沒有別處重述同一條 —— 已知的重述清單在 `README.md`。
