@@ -15,11 +15,12 @@
 
 ## skill 支援兩個執行環境
 
-SKILL.md 的工具名稱以 claude.ai 聊天介面為準,檔案開頭有一張**環境對應表**,列出在 Claude Code 要換成哪些工具(`AskUserQuestion`、`WebSearch`、`Artifact`、記憶目錄等)。流程與所有品質標準兩邊完全相同,只有工具名稱不同。
+SKILL.md 的工具名稱以 claude.ai 聊天介面為準,檔案開頭有一張**環境對應表**,列出在 Claude Code 要換成哪些工具(`AskUserQuestion`、`WebSearch`、`Read`/`Write`、本地檔案交付、`profiles/` 等)。流程與所有品質標準兩邊完全相同,只有工具名稱不同。
 
 編修時的注意事項:
 
 - **不要因為某個工具在這個工作區不存在,就把它當成錯誤刪掉。** `places_search`、`weather_fetch`、`present_files`、`/mnt/skills/...` 都是 claude.ai 專屬,它們是對的
+- **這一條的用途是擋住錯誤的編輯決定,不是拿來當開場白。** 使用者問 zip 是不是最新的、要求改某一條規則、或直接叫 skill 排行程,就做那件事 —— **不要在回覆開頭放一段環境說明**
 - 反過來,**新增任何用到工具的規則時,要同時在環境對應表補上另一個環境的做法**,或明確寫出該環境沒有這個能力、要怎麼降級
 - Claude Code 少兩個能力:沒有地點查詢(拿不到 Google 評分與 `place_id`)、沒有天氣工具。兩者都用 `WebSearch` 補,查不到就照原規則換一個查得到的
 - **問卷需要互動 session。** 非互動執行(`-p`、排程、CI)跑不了問卷
