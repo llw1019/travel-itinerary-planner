@@ -163,7 +163,8 @@
 
 - [ ] 單一 HTML 檔,CSS/JS 全部內嵌,**字體沒有外連**(Google Fonts 也不行,離線要能看)
 - [ ] (Claude Code)是**完整 standalone 文件**:`<!doctype html>`、`<html lang>`、`<head>`、**`<meta charset="utf-8">`**、`<meta viewport>`、`<body>` 齊全。少了 charset,本地開檔中文日文會亂碼
-- [ ] (Claude Code)檔案**不在 session 暫存/scratchpad 目錄**,存在使用者指定位置或工作目錄的 `itineraries/`,且回覆裡給了絕對路徑
+- [ ] (Claude Code)檔案**不在 session 暫存/scratchpad 目錄**,存在使用者指定位置或專案根目錄的 `itineraries/`,且回覆裡給了絕對路徑
+- [ ] (檔案在 git repo 裡)`itineraries/` **已被 `.gitignore` 排除**;行程裡有訂房編號、電話、費用,不該進版本控制
 - [ ] **先取得視覺設計準則才開始做視覺**(claude.ai 讀 `/mnt/skills/public/frontend-design/SKILL.md`;Claude Code 用 `Skill` 呼叫 `artifact-design`),成品不是樣板感
 - [ ] 有基本 `@media print` 樣式,列印時日期分頁籤全部展開(不是只印出當前那一頁)
 - [ ] **只交付了詳細版一份**,沒有同時做列印版(列印版是內容定案後的另一個階段)
