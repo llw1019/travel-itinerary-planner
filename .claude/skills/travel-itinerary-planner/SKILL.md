@@ -257,7 +257,7 @@ description: Plan detailed domestic or international travel/business itineraries
 
 使用者說要 → 依 `references/html-output-spec.md` 的「加入使用者提供的圖片」一節執行。流程摘要:
 
-1. 建立與 HTML 同名(去掉 `.html`)的資料夾,底下開 `pics/`,把**絕對路徑**告訴使用者
+1. 建立以**行程識別名(目的地 + 日期)命名、不帶版號**的資料夾,底下開 `pics/`,把**絕對路徑**告訴使用者。資料夾不帶版號,v1 → v2 才不必複製圖片或改名
 2. 給命名指引(地名、設施名、飯店名+房型;不要 `IMG_1234`)與尺寸建議
 3. 使用者放好後,**用 `Read` 把每一張圖真的打開看過**,不要只憑檔名猜 —— 擺錯位置比沒有圖更糟
 4. 整理成表:檔名 / 實際看到的內容 / 建議放哪裡 / 為什麼
@@ -265,7 +265,7 @@ description: Plan detailed domestic or international travel/business itineraries
 6. 插入時用相對路徑、`alt` 寫實際內容、`figcaption` 寫這張圖在行程裡的意義、`loading="lazy"`
 7. 版本號 +1,製表資訊註明這一版加了什麼
 
-**兩件必須告訴使用者的事**:圖片是外部檔案,搬移手冊時要連同同名資料夾一起搬;若之後要發布成 artifact,相對路徑讀不到,得改成 base64 內嵌或用 artifact 的 asset 機制。
+**兩件必須告訴使用者的事**:用相對路徑時圖片是外部檔案,搬移手冊要連同圖庫資料夾一起搬;若之後要發布成 artifact,相對路徑讀不到,得改成 base64 內嵌或用 artifact 的 asset 機制。
 
 ## Step 9:列印版(選用,內容定案後才做)
 
