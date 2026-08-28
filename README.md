@@ -38,7 +38,8 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 天氣:預報 vs 歷史氣候 | SKILL.md、research-and-scheduling.md、output-checklist.md |
 | 限制回核(飲食/無障礙/體力/保密/語言/價位) | SKILL.md、research-and-scheduling.md、output-checklist.md |
 | 地圖連結的目的地適用性(中國大陸等不能用 Google Maps) | html-output-spec.md、output-checklist.md |
-| 交付回覆要講的五件事 | html-output-spec.md、output-checklist.md |
+| 交付回覆要講的七件事 | html-output-spec.md、output-checklist.md |
+| 三種入口的分法與各自走法(A／B1／B2) | SKILL.md、output-checklist.md |
 | 未確定事項要寫具體的下一步動作,不能只標「待補」 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 硬擋 15 項(在完整清單裡刻意重列一次) | output-checklist.md 第零節與各分類節 |
 

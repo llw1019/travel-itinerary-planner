@@ -1,6 +1,6 @@
 ---
 name: travel-itinerary-planner
-description: Plan detailed domestic or international travel/business itineraries at executive-grade thoroughness — covering flights, ground transportation and driver notifications, lodging, pacing, indoor/outdoor activity ratio, budget, and traveler mobility/dietary needs — then produce a polished standalone HTML itinerary. Use this skill whenever the user asks to plan a trip, business travel, or itinerary (排行程, 出差安排, 旅遊規劃, 接待貴賓行程, 安排司機/航班), regardless of whether the traveler is a company executive/chairman (董事長) or an ordinary person — always apply the highest standard of thoroughness since the audience is unknown. Also use this skill when the user asks to reuse, update, or reference a saved travel profile (設定檔) for a named traveler (e.g. "用老闆的設定檔排行程"), or asks to save one after an intake. Also use it when the user already has a draft or existing itinerary and wants it checked, corrected, expanded, or turned into a polished handbook (把這份行程做成手冊, 幫我核對/檢查這份行程, 行程整理成手冊, 舊行程要改).
+description: Plan detailed domestic or international travel/business itineraries at executive-grade thoroughness — covering flights, ground transportation and driver notifications, lodging, pacing, indoor/outdoor activity ratio, budget, and traveler mobility/dietary needs — then produce a polished standalone HTML itinerary. Use this skill whenever the user asks to plan a trip, business travel, or itinerary (排行程, 出差安排, 旅遊規劃, 接待貴賓行程, 安排司機/航班), regardless of whether the traveler is a company executive/chairman (董事長) or an ordinary person — always apply the highest standard of thoroughness since the audience is unknown. Also use this skill when the user asks to reuse, update, or reference a saved travel profile (設定檔) for a named traveler (e.g. "用老闆的設定檔排行程"), or asks to save one after an intake. Also use it when the user already has a draft or existing itinerary and wants it checked, corrected, expanded, or turned into a polished handbook (把這份行程做成手冊, 幫我核對/檢查這份行程, 行程整理成手冊, 舊行程要改, 改上次排的行程).
 ---
 
 # 差旅 / 旅遊行程規劃 Travel Itinerary Planner
@@ -54,7 +54,7 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## 流程總覽
 
-0. **判斷入口**:從零開始(入口 A),還是使用者已有一份行程要修訂或做成手冊(入口 B)。入口 B 多一道「核對既有內容」,而且要重新確認哪些是真錨點、哪些只是草案。
+0. **判斷入口**:從零開始(A)、改我們自己產出過的手冊(B1)、還是使用者拿來一份自己的行程(B2)。**問之前先自己列 `itineraries/` 看有什麼**。B1 走 Step 7 的同步鏈,B2 多一道「逐項核對既有內容」並重新確認哪些是真錨點、哪些只是草案。
 1. **檢查是否已有可套用的設定檔** → 有的話詢問是否沿用/只更新變動的部分,沒有的話才走完整問卷。
 2. **多輪問卷**,依 `references/intake-questions.md` 依序詢問。
 3. **雙重確認關卡**(Step 2.5):最終確認清單 + 詢問是否存檔,兩件事必須在同一則回覆內完成。
@@ -69,28 +69,47 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 0:先判斷這是哪一種入口
 
-有兩種入口,走法不同。**先確認是哪一種,不要一律當成從零開始。**
+有三種入口,走法差很多。**先確認是哪一種,不要一律當成從零開始。**
+
+**問之前先自己查。** Claude Code:用 `Glob` 列 `itineraries/*.html`。列出來有東西,選項就要**帶著檔名問**(「要改 `花蓮三日_v2.html` 嗎,還是排一趟新的?」),不要丟一個空泛的「你是要新的還是既有的」—— 使用者不會記得自己上次存的檔名。目錄不存在或是空的,就只有 A 與 B2 兩個可能。claude.ai 沒有這個目錄,跳過這一步直接問。
+
+| 入口 | 情況 | 走法 |
+|---|---|---|
+| A | 從零開始 | Step 1 → Step 9 全程 |
+| B1 | 改 `itineraries/` 裡已經有的手冊(這個 skill 自己產出的) | 讀完整份 → **Step 7 的同步鏈** |
+| B2 | 使用者拿來一份自己的行程或草稿 | 逐項核對 → 只問缺的 → Step 4 起 |
 
 ### 入口 A:從零開始
 
-使用者只有一個念頭(「幫我排三天東京」),沒有任何既有內容。走完整流程 Step 1 → Step 8。
+使用者只有一個念頭(「幫我排三天東京」),沒有任何既有內容。走完整流程 Step 1 → Step 9。
 
-### 入口 B:使用者已經有一份行程或草稿
+### 入口 B1:改我們自己產出過的手冊
 
-使用者丟來一份既有行程檔、一份草稿、上次的行程要改、或一堆散落的「已經訂好的東西」。**這是非常常見的入口**,而且處理方式跟入口 A 差很多:
+`itineraries/` 裡的檔是這個 skill 自己產的,所以結構已知、`pics/` 已經在旁邊、資料是我們自己查過的並且有註明查詢日期。**不要把它當成陌生檔重跑一次 B2 那套逐項核對** —— 那套是為「來源不明的檔」寫的,套在自己的產出上只是儀式。要做的是:
+
+1. **先讀完整份**,不只是要改的那一段。速查總表、訂位狀態追蹤表、備案的替換對應、費用分項都要讀進來,因為 Step 7 要同步的就是這些
+2. **先確認是哪一種修改。** 「換內容」(改地點、加項目、調時間)才需要重排;**「只加圖片」「只出列印版」「只改排版」不必動行程**,直接跳 Step 8 / Step 9,不要藉機重排一遍
+3. **查資料時效。** 看文件「製表資訊」上的日期,依 `references/research-and-scheduling.md` 的時效規則判斷;會過期的欄位(營業時間、休館日、票價、班次、價格)要重查,不要因為是自己查的就沿用
+4. **改動一律走 Step 7 的同步鏈**,八個同步點逐項過。這是 B1 的重點,漏掉會讓文件自己前後矛盾
+5. **存成新版號的檔名**,依 `references/html-output-spec.md` 的檔名規則,**不要覆蓋舊檔** —— 使用者要能比對改了什麼。資料夾不帶版號,所以 `pics/` 不必動也不必複製
+6. 使用者要改的那一份如果**是列印版**,對應的詳細版也要一起更新,否則下次再改會從一份過期的詳細版開始
+
+### 入口 B2:使用者拿來一份自己的行程或草稿
+
+使用者丟來一份別處來的行程檔、一份草稿、或一堆散落的「已經訂好的東西」。**這是非常常見的入口**,而且處理方式跟入口 A 差很多:
 
 1. **先完整讀完使用者給的內容**,逐項整理成兩份清單:「已經定了的」與「還缺的」。整理完先給使用者看,請他確認你理解正確。
-2. **已定的項目不要重問,但一定要逐項核對** —— 這是入口 B 最有價值的一步:
+2. **已定的項目不要重問,但一定要逐項核對** —— 這是入口 B2 最有價值的一步:
    - 名稱是否精確(同品牌哪一家分店、是館內的哪一個場地。既有行程常常寫得不夠精確,例如寫了飯店名但實際訂的是頂樓某個餐廳而不是一樓酒廊)
    - 營業時間與休館日是否與安排的時段相容
    - 前後項目的時間與交通是否對得上
    - 地址與現況是否還正確(店家搬遷、歇業、整修閉館)
 3. **核對出來的錯誤與矛盾要明確列出來,不要默默修掉。** 處理方式同 Step 4 的矛盾標示規則:把落差寫清楚交給使用者裁決。
 4. **一定要重新確認哪些是真的錨點。** 既有行程裡的項目,有些已經訂位付款不可能動,有些只是草案想法。**不問清楚就會把草案當成不可動的錨點,整份行程繞著一個假錨點排。** 逐項問「這個已經訂了嗎?可以動嗎?」
-5. **只問缺的部分。** 入口 B 通常缺的是:偏好類(步調、室內外、內容偏好)、預算、每日時間邊界與用餐時間、包車時數、交付對象、證件狀態。這些既有行程檔裡很少會寫。
+5. **只問缺的部分。** 入口 B2 通常缺的是:偏好類(步調、室內外、內容偏好)、預算、每日時間邊界與用餐時間、包車時數、交付對象、證件狀態。這些既有行程檔裡很少會寫。
 6. **文件的「資料來源與免責」要寫明**:整理自哪一份原始資料、做了哪幾處更正、哪些數字是什麼時候查的。
 
-入口 B 不是入口 A 的簡化版 —— 它多了「核對既有內容」這件事,而核對常常是使用者真正需要的價值(他自己排的行程裡有幾個錯,他不知道)。
+入口 B2 不是入口 A 的簡化版 —— 它多了「核對既有內容」這件事,而核對常常是使用者真正需要的價值(他自己排的行程裡有幾個錯,他不知道)。
 
 ## Step 1:檢查既有設定檔
 
@@ -228,7 +247,7 @@ description: Plan detailed domestic or international travel/business itineraries
 
 ## Step 7:使用者要求修改時
 
-行程一定會來回修改。**改動很少是單點的** —— 改一個項目,下面這些地方全部要跟著同步,漏掉任何一個都會讓文件內部互相矛盾,而且使用者不一定會發現:
+**入口 B1 走的就是這一段。** 行程一定會來回修改。**改動很少是單點的** —— 改一個項目,下面這些地方全部要跟著同步,漏掉任何一個都會讓文件內部互相矛盾,而且使用者不一定會發現:
 
 1. **前後的移動行與時間** —— 換了地點,前後兩段車程都變了,而且後面整串時間可能要順移
 2. **該日的驗算** —— 順移之後重新逐行驗算一次,不要假設只有那一格變
