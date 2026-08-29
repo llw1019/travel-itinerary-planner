@@ -589,8 +589,7 @@
 
 ```
 itineraries/
-  liushidan-daylily-20260905-0906/        ← 圖庫與查證記錄,不帶版號
-    _research.md                          ← Step 4 的查證記錄
+  liushidan-daylily-20260905-0906/        ← 圖庫,不帶版號
     pics/
       我拍的.jpg
       cc/                                 ← 自由授權圖與授權記錄
@@ -1000,8 +999,7 @@ B5 · 共 38 頁 · 列印請選「實際大小 100%」並勾選背景圖形
 
 ```
 itineraries/
-  shanghai-20260904-0908/                 ← 圖庫與查證記錄,三份共用
-    _research.md
+  shanghai-20260904-0908/                 ← 圖庫,三份共用
     pics/
   shanghai-20260904-0908-v3.html          ← 詳細版
   shanghai-20260904-0908-print-v1.html    ← B5 列印手冊

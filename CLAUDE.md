@@ -31,20 +31,19 @@ SKILL.md 的工具名稱以 claude.ai 聊天介面為準,檔案開頭有一張**
 |---|---|---|
 | `SKILL.md` | 環境對應表、三種入口(A／B1／B2)、流程 Step 0–10 | 永遠載入 |
 | `references/intake-questions.md` | 問卷題庫 A–H、A-2 事由分支、設定檔儲存格式 | Step 2、Step 3 |
-| `references/research-and-scheduling.md` | 資料查證規則、`_research.md` 落地、排程七步、限制回核、飯店為主的日子 | Step 4,排每一天之前 |
+| `references/research-and-scheduling.md` | 資料查證規則、查證筆記、排程七步、限制回核、飯店為主的日子 | Step 4,排每一天之前 |
 | `references/html-output-spec.md` | 14 個必含區塊的欄位規格、兩環境交付流程、階段一 + 兩種衍生版(B5 列印手冊／A4 精簡版) | Step 6、Step 9、Step 10 |
 | `references/editorial-standards.md` | 編輯判斷、推薦理由寫法、用字與專有名詞 | Step 6,寫內容時 |
 | `references/output-checklist.md` | 硬擋 16 項 + 完整驗收清單(224 項,交付詳細版實跑 174 項) | Step 7,交付前 |
 
 ## 執行時產生的資料存哪裡
 
-skill 跑起來會產生幾種要留下來的東西。**兩者都放在專案根目錄下、使用者看得到的地方,而且都被 `.gitignore` 排除 —— repo 裡只有乾淨的 skill 原始碼,不含任何個人資料。**
+skill 跑起來會產生兩種要留下來的東西。**兩者都放在專案根目錄下、使用者看得到的地方,而且都被 `.gitignore` 排除 —— repo 裡只有乾淨的 skill 原始碼,不含任何個人資料。**
 
 | 資料 | 位置 | 內容 |
 |---|---|---|
 | 行程手冊 | `itineraries/` | 產出的 HTML,含訂房編號、聯絡電話、完整費用 |
 | 手冊的圖片 | `itineraries/<與 html 同名>/pics/` | 使用者自己提供的圖片(skill 一律不自行找圖) |
-| 查證記錄 | `itineraries/<與 html 同名>/_research.md` | Step 4 查到的營業時間、票價、預約方式、來源網址與查詢日期。產出手冊時從這個檔寫,不是憑對話記憶 |
 | 旅遊設定檔 | `profiles/<名稱>.md` | 各對象的差旅偏好(艙等、步調、預算、用餐時間等) |
 
 這些目錄都由 skill 在需要時自行建立。**不要把設定檔寫進 Claude Code 的記憶目錄**(`~/.claude/projects/.../memory/`)—— 那裡使用者看不到也改不動,而且按專案分、不好備份。

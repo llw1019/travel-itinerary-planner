@@ -35,7 +35,7 @@ description: Plan detailed domestic or international travel/business itineraries
 | 天氣 | `weather_fetch` | **沒有對應工具**。改用 `WebSearch` 查預報,或該地該月份的歷史氣候平均 |
 | 設定檔存取 | `memory_read` / `memory_write` / `memory_list`,路徑 `/people/<名稱>.md` | **專案根目錄下的 `profiles/<名稱>.md`**(含 `.claude/` 的那一層)。用 `Glob` 列出 `profiles/*.md`、`Read` 讀、`Write`/`Edit` 寫。目錄不存在就建立。**不要用 Claude Code 的記憶目錄** —— 設定檔要放在使用者看得到、改得動、備份得了的地方 |
 | 讀寫檔案 | `view` / `create_file` | `Read` / `Write` / `Edit` |
-| 查證記錄落地 | `create_file` 寫到 `/mnt/user-data/outputs/<行程名>_research.md` | `Write` 到 `itineraries/<與 html 同名的資料夾>/_research.md`(與 `pics/` 同層,已被 `.gitignore` 排除)|
+| 查證筆記(session 內的暫存工作檔) | `create_file` 寫到工作區暫存路徑(例如 `/tmp/`)。**不要放進 `/mnt/user-data/outputs/`**,那是交付目錄 | `Write` 到 session 的暫存/scratchpad 目錄。**不要寫進 `itineraries/`**,那裡放的是要留下來的東西 |
 | 視覺設計準則 | 讀 `/mnt/skills/public/frontend-design/SKILL.md` | 用 `Skill` 工具呼叫 `artifact-design` |
 | 交付手冊 | 存到 `/mnt/user-data/outputs/` + `present_files` | **預設交付本地檔案**:`Write` 出完整 standalone HTML(要有 `<!doctype>`/`<head>`/`<meta charset="utf-8">`,字體不外連),存在工作目錄的 `itineraries/`,回覆裡給絕對路徑。**同一則回覆要問「要不要另外發布成 artifact 取得可分享網址」;沒得到同意就只交付本地檔案** |
 
@@ -59,7 +59,7 @@ description: Plan detailed domestic or international travel/business itineraries
 1. **檢查是否已有可套用的設定檔** → 有的話詢問是否沿用/只更新變動的部分,沒有的話才走完整問卷。
 2. **多輪問卷**,依 `references/intake-questions.md` 依序詢問。
 3. **雙重確認關卡**(Step 2.5):最終確認清單 + 詢問是否存檔,兩件事必須在同一則回覆內完成。
-4. **蒐集實際資訊**(航班/天氣/景點/營業時間/交通時間)並**把查證結果寫進 `_research.md`**,依 `references/research-and-scheduling.md` 的順序排定行程。
+4. **蒐集實際資訊**(航班/天氣/景點/營業時間/交通時間)並**邊查邊寫進暫存筆記**(session 內的工作檔,不落地保留),依 `references/research-and-scheduling.md` 的順序排定行程。
 5. **排程大綱先給使用者確認**:一天一行、沒有散文。這一步是為了讓「哪一區在哪一天」這種最貴的決定,在還沒寫下幾千字之前先被看見。
 6. **產出 HTML 旅遊手冊(詳細版)**,依 `references/html-output-spec.md`。
 7. **交付前對照 `references/output-checklist.md` 逐項自我檢查**,才交付。
@@ -192,13 +192,13 @@ description: Plan detailed domestic or international travel/business itineraries
 - **天氣**:確認天氣,安排室內外備案,以及行前清單的衣物建議。claude.ai 用 `weather_fetch`,Claude Code 用 `WebSearch`。**用法有陷阱**:只有 10-14 天內的行程才能當預報用,更遠的要改查該月份的歷史氣候平均,見 `references/research-and-scheduling.md` 的資料查證規則一節。
 
 
-### 查證結果要落地成檔,不要只留在對話裡
+### 邊查邊寫暫存筆記,不要只留在對話裡
 
-**每查完一個項目就寫進 `_research.md`,不要全部堆在對話裡等到最後才寫文件。** 位置與寫法見 `references/research-and-scheduling.md` 的資料查證規則一節,環境對應見上方表格。
+**每查完一個項目就寫進暫存筆記,不要全部堆在對話裡等到最後才寫文件。** 寫法見 `references/research-and-scheduling.md` 的資料查證規則一節,位置見上方環境對應表。
 
-理由是很具體的:對話會被壓縮,而**被壓掉的正好是數字** —— 票價、營業時段、來源網址、查詢日期。摘要會留下「上海博物館週一休館」,不會留下「官網 2026-07-09 更新、需線上預約、境外用 Trip.com」。到了 Step 6 憑印象寫,那就是捏造的入口,而硬擋清單第一條就是不可以捏造。
+理由很具體:對話會被壓縮,而**被壓掉的正好是數字** —— 票價、營業時段、來源網址、查詢日期。摘要會留下「上海博物館週一休館」,不會留下「需線上預約、境外用 Trip.com、每月 1 日開放次月」。到了 Step 6 憑印象寫,那就是捏造的入口,而硬擋清單第一條就是不可以捏造。有這份筆記,**Step 6 是從檔案寫文件,不是從記憶寫**。
 
-有這個檔之後:Step 6 是**從檔案寫文件**而不是從記憶、Step 8 改一個項目時只要重查那一項、區塊 14「哪些數字什麼時候查的」直接有材料。
+**這是 session 內的工作檔,壽命只到手冊產出為止。** 不要寫進 `itineraries/`、不要在改版時同步它、不要當成產物交付。要保留的資訊就寫進手冊 —— 多一份要維護的文件,就是多一個「改一端忘了另一端」的地方。
 
 ### 三條在排程前就要守住的硬規則
 
@@ -294,10 +294,9 @@ description: Plan detailed domestic or international travel/business itineraries
 5. **備案的替換對應** —— 如果被換掉的項目是某個備案的「可替換對象」,那個對應關係要更新
 6. **一頁式速查總表與該日定調** —— 當天的重點變了,總表那一行與開頭那句定調可能不再成立
 7. **飯店行程對應表** —— 出發時間或回飯店時間變了要更新
-8. **製表資訊的版本與日期** —— 每次改版都要更新,否則使用者分不清哪份是最新
+8. **製表資訊的版本與日期** —— 每次改版都要更新,而且要寫明**這一版改了什麼、重查了哪些項目**(「v3:換掉第三天午餐;重查上海博物館的營業時間與票價」)。這是之後判斷資料時效的唯一依據 —— 沒有它,下次只知道整份的製表日期,分不出哪幾項是什麼時候查的
 9. **已經做過的衍生版** —— B5 列印手冊或 A4 精簡版若已經產出過,要**重新生成**(不是手改),並更新它們的「生成自哪一版」標記。漏掉的話,老闆手上那份精簡版會停在舊內容
-10. **`_research.md`** —— 因為改動而重查的項目,查證記錄要一起更新(新的營業時間、票價、查詢日期)。不更新的話,下一次改版會拿舊記錄當依據
-11. **已經發布過的 artifact** —— 發布過就要**問一句**要不要同步更新那個網址(重用同一個檔案路徑重新發布,網址不變)。要問不要自動更新,但也不要不提 —— 網址已經轉給別人了,他們沒有辦法知道自己看的是舊的
+10. **已經發布過的 artifact** —— 發布過就要**問一句**要不要同步更新那個網址(重用同一個檔案路徑重新發布,網址不變)。要問不要自動更新,但也不要不提 —— 網址已經轉給別人了,他們沒有辦法知道自己看的是舊的
 
 改完後**重跑 `references/output-checklist.md` 的第二節(排程正確性)與第四節(編輯判斷)**,不用整份重跑,但這兩節必跑 —— 修改最容易破壞的就是時間連鎖與節奏判斷。
 

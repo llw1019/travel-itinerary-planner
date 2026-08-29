@@ -41,7 +41,7 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 交付回覆要講的七件事(含四個主動選項) | html-output-spec.md、output-checklist.md |
 | 三種入口的分法與各自走法(A／B1／B2) | SKILL.md、output-checklist.md |
 | 排程大綱先確認再寫手冊 | SKILL.md、output-checklist.md |
-| 查證結果落地成 `_research.md`,手冊從檔案寫 | SKILL.md、research-and-scheduling.md、html-output-spec.md、output-checklist.md |
+| 查證筆記是 session 內的暫存工作檔(不落地、不同步),手冊從它寫 | SKILL.md、research-and-scheduling.md、output-checklist.md |
 | 飯店是目的地還是基地(影響選飯店、排程、住宿區塊) | intake-questions.md、research-and-scheduling.md、html-output-spec.md、output-checklist.md |
 | 衍生版分開問、從詳細版重生成、不獨立編輯 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 詳細版每次版號 +1(含加圖)要帶動下游:衍生版重生成、artifact 問要不要同步 | SKILL.md、html-output-spec.md、output-checklist.md |
