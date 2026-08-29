@@ -35,7 +35,7 @@ description: Plan detailed domestic or international travel/business itineraries
 | 天氣 | `weather_fetch` | **沒有對應工具**。改用 `WebSearch` 查預報,或該地該月份的歷史氣候平均 |
 | 設定檔存取 | `memory_read` / `memory_write` / `memory_list`,路徑 `/people/<名稱>.md` | **專案根目錄下的 `profiles/<名稱>.md`**(含 `.claude/` 的那一層)。用 `Glob` 列出 `profiles/*.md`、`Read` 讀、`Write`/`Edit` 寫。目錄不存在就建立。**不要用 Claude Code 的記憶目錄** —— 設定檔要放在使用者看得到、改得動、備份得了的地方 |
 | 讀寫檔案 | `view` / `create_file` | `Read` / `Write` / `Edit` |
-| 查證筆記(session 內的暫存工作檔) | `create_file` 寫到工作區暫存路徑(例如 `/tmp/`)。**不要放進 `/mnt/user-data/outputs/`**,那是交付目錄 | `Write` 到 session 的暫存/scratchpad 目錄。**不要寫進 `itineraries/`**,那裡放的是要留下來的東西 |
+| 查證筆記(session 內的暫存工作檔,建議命名 `research-notes.md`) | `create_file` 寫到工作區暫存路徑(例如 `/tmp/`)。**不要放進 `/mnt/user-data/outputs/`**,那是交付目錄 | `Write` 到 session 的暫存/scratchpad 目錄。**不要寫進 `itineraries/`**,那裡放的是要留下來的東西 |
 | 視覺設計準則 | 讀 `/mnt/skills/public/frontend-design/SKILL.md` | 用 `Skill` 工具呼叫 `artifact-design` |
 | 交付手冊 | 存到 `/mnt/user-data/outputs/` + `present_files` | **預設交付本地檔案**:`Write` 出完整 standalone HTML(要有 `<!doctype>`/`<head>`/`<meta charset="utf-8">`,字體不外連),存在工作目錄的 `itineraries/`,回覆裡給絕對路徑。**同一則回覆要問「要不要另外發布成 artifact 取得可分享網址」;沒得到同意就只交付本地檔案** |
 
@@ -258,6 +258,7 @@ description: Plan detailed domestic or international travel/business itineraries
 - **這次做過的取捨與理由** —— 為什麼某個使用者提過的地方沒排進去、為什麼某天只有 3 項
 - **查證時發現的矛盾** —— 營業時間衝突、來源不一致、資料偏舊的項目
 - **需要使用者決定的選項** —— 同一格有兩個以上方案(船型、票種、餐廳二選一)的,現在問比做完再問便宜
+- **打算用的檔名與存放路徑** —— 「檔名打算用 `上海行程_20260904-0908_v1.html`,存在 `<絕對路徑>`」。**檔名要在寫檔之前確認,不是產出之後才問** —— 現在改只是換一個字串,產出之後改就要動已經寫下去的檔
 
 **這是一道確認,不是一輪問卷。** 使用者說「可以」就往下做,不要逐項要他確認。他改了哪幾天就照改,改完不必再確認第二次 —— 大綱來回超過兩輪,就失去它省成本的意義了。
 
