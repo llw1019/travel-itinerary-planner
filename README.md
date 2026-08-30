@@ -43,6 +43,8 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 排程大綱先確認再寫手冊(同一則也給檔名確認) | SKILL.md、html-output-spec.md、output-checklist.md |
 | 查證筆記是 session 內的暫存工作檔(不落地、不同步),手冊從它寫 | SKILL.md、research-and-scheduling.md、output-checklist.md |
 | 飯店是目的地還是基地(影響選飯店、排程、住宿區塊) | intake-questions.md、research-and-scheduling.md、html-output-spec.md、output-checklist.md |
+| 深度介紹:列候選讓使用者選、查不到就整段不寫、螢幕彈窗列印獨立成章 | SKILL.md、html-output-spec.md、editorial-standards.md、research-and-scheduling.md、output-checklist.md |
+| 交付後的主動選項分兩題問(加工 / 衍生版),一題最多 4 個選項 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 衍生版分開問、從詳細版重生成、不獨立編輯 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 詳細版每次版號 +1(含加圖)要帶動下游:衍生版重生成、artifact 問要不要同步 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 未確定事項要寫具體的下一步動作,不能只標「待補」 | SKILL.md、html-output-spec.md、output-checklist.md |
