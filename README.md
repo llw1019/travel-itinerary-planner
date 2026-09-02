@@ -40,6 +40,8 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 地圖連結的目的地適用性(中國大陸等不能用 Google Maps) | html-output-spec.md、output-checklist.md |
 | 交付回覆要講的七件事(含四個主動選項) | html-output-spec.md、output-checklist.md |
 | 三種入口的分法與各自走法(A／B1／B2) | SKILL.md、output-checklist.md |
+| 使用者提供的檔案要先盤點再讀,圖片也要用 Read 打開看 | SKILL.md、output-checklist.md |
+| 配色從具體視覺主體推導、不只換色相、兩環境共用 | html-output-spec.md、intake-questions.md、output-checklist.md |
 | 排程大綱先確認再寫手冊(同一則也給檔名確認) | SKILL.md、html-output-spec.md、output-checklist.md |
 | 查證筆記是 session 內的暫存工作檔(不落地、不同步),手冊從它寫 | SKILL.md、research-and-scheduling.md、output-checklist.md |
 | 飯店是目的地還是基地(影響選飯店、排程、住宿區塊) | intake-questions.md、research-and-scheduling.md、html-output-spec.md、output-checklist.md |
@@ -48,6 +50,6 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 衍生版分開問、從詳細版重生成、不獨立編輯 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 詳細版每次版號 +1(含加圖)要帶動下游:衍生版重生成、artifact 問要不要同步 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 未確定事項要寫具體的下一步動作,不能只標「待補」 | SKILL.md、html-output-spec.md、output-checklist.md |
-| 硬擋 16 項(在完整清單裡刻意重列一次) | output-checklist.md 第零節與各分類節 |
+| 硬擋 17 項(在完整清單裡刻意重列一次) | output-checklist.md 第零節與各分類節 |
 
 另外,`output-checklist.md` 開頭寫著完整清單的項數,加減項目時要一起改那個數字。
