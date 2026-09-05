@@ -41,7 +41,7 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 交付回覆要講的七件事(含四個主動選項) | html-output-spec.md、output-checklist.md |
 | 三種入口的分法與各自走法(A／B1／B2) | SKILL.md、output-checklist.md |
 | 使用者提供的檔案要先盤點再讀,圖片也要用 Read 打開看 | SKILL.md、output-checklist.md |
-| 選圖三原則:需求先於供給、一個物件 1–2 張且有特色的才要(張數跟行程長度連動沒有上限)、策略只有一套三版共用 | SKILL.md、html-output-spec.md、output-checklist.md |
+| 選圖三原則:需求先於供給、每張圖都要答得出讀者需要知道什麼(答不出就不放,不硬塞)、策略只有一套三版共用 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 按用途分流(場景照/定位照/地圖/清單型/純資訊截圖),清單型收進採買清單表、A4 砍掉 | SKILL.md、html-output-spec.md、output-checklist.md |
 | 自由授權圖:不主動找,缺圖時提議、經同意才下載,標授權記 `_licences.json` | CLAUDE.md、SKILL.md、html-output-spec.md、output-checklist.md |
 | `<img>` 上只放能被直接吃掉的值(偏心寫 inline `object-position`、主體分布不預存、中文檔名 percent-encoding) | SKILL.md、html-output-spec.md、output-checklist.md |
