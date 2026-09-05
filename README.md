@@ -41,6 +41,13 @@ skill 在 `.claude/skills/travel-itinerary-planner/`,Claude Code 開在這個 re
 | 交付回覆要講的七件事(含四個主動選項) | html-output-spec.md、output-checklist.md |
 | 三種入口的分法與各自走法(A／B1／B2) | SKILL.md、output-checklist.md |
 | 使用者提供的檔案要先盤點再讀,圖片也要用 Read 打開看 | SKILL.md、output-checklist.md |
+| 選圖三原則:需求先於供給、一個物件 1–2 張且有特色的才要(張數跟行程長度連動沒有上限)、策略只有一套三版共用 | SKILL.md、html-output-spec.md、output-checklist.md |
+| 按用途分流(場景照/定位照/地圖/清單型/純資訊截圖),清單型收進採買清單表、A4 砍掉 | SKILL.md、html-output-spec.md、output-checklist.md |
+| 自由授權圖:不主動找,缺圖時提議、經同意才下載,標授權記 `_licences.json` | CLAUDE.md、SKILL.md、html-output-spec.md、output-checklist.md |
+| `<img>` 上只放能被直接吃掉的值(偏心寫 inline `object-position`、主體分布不預存、中文檔名 percent-encoding) | SKILL.md、html-output-spec.md、output-checklist.md |
+| 照片的個資掛在「要發布成公開網址／要印給別人」那個關卡,本地不逐張審查 | SKILL.md、html-output-spec.md、output-checklist.md |
+| 深度介紹是獨立的一輪(自己要圖)、被排除的候選要寫到一樣深、要綁回可訂狀態 | CLAUDE.md、SKILL.md、html-output-spec.md、output-checklist.md |
+| B5 的 base64 要先按版位縮圖(200dpi、長邊 1200／800px、原圖留著、超 12MB 要主動提) | SKILL.md、html-output-spec.md、output-checklist.md |
 | 配色從具體視覺主體推導、不只換色相、兩環境共用 | html-output-spec.md、intake-questions.md、output-checklist.md |
 | 排程大綱先確認再寫手冊(同一則也給檔名確認) | SKILL.md、html-output-spec.md、output-checklist.md |
 | 查證筆記是 session 內的暫存工作檔(不落地、不同步),手冊從它寫 | SKILL.md、research-and-scheduling.md、output-checklist.md |
